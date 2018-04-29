@@ -1,5 +1,7 @@
 require("dotenv").config();
 var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
+
 
 var client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -13,4 +15,18 @@ var client = new Twitter({
     if (!error) {
       console.log(tweets);
     }
+  });
+
+   
+var spotify = new Spotify({
+    id: <your spotify client id>,
+    secret: <your spotify client secret>
+  });
+   
+  spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+   
+  console.log(data); 
   });
