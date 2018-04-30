@@ -10,23 +10,31 @@ var client = new Twitter({
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
   });
    
-  var params = {screen_name: 'findTBDE'};
+  var params = {screen_name: 'findTBDE',
+                count: 20};
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
-      console.log(tweets);
+        for (let i = 0; i < tweets.length; i++) {
+            console.log("On "+ tweets[0].created_at+" ,"+tweets[0].user.name+ " tweeted: ");
+            console.log(tweets[i].text);
+        }
     }
   });
 
    
 var spotify = new Spotify({
-    id: <your spotify client id>,
-    secret: <your spotify client secret>
+    id: process.env.SPOTIFY_ID,
+    secret: process.env.SPOTIFY_SECRET
   });
    
-  spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+  spotify.search({ type: 'track', query: 'All the Small Things', limit:1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-   
-  console.log(data); 
+  
+  console.log("Here's the song you requested: ")  
+  console.log(data.tracks.items[0].name); 
+  console.log(data.tracks.items[0].artists[0].name)
+  console.log(data.tracks.items[0].external_urls.spotify)
+
   });
