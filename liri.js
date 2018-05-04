@@ -1,9 +1,11 @@
 require("dotenv").config();
 var fs = require("fs");
+var inquirer = require("inquirer");
 
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require('request');
+
 var choice = process.argv[2];
 var input = process.argv[3];
 
@@ -41,13 +43,16 @@ switch(choice) {
 ;
   break;
   case `spotify-this-song`:
+
+  function spotified(mysong) {
+    
   console.log("HI Spotify");
   var spotify = new Spotify({
     id: process.env.SPOTIFY_ID,
     secret: process.env.SPOTIFY_SECRET
   });
    
-  spotify.search({ type: 'track', query: 'All the Small Things', limit:1 }, function(err, data) {
+  spotify.search({ type: 'track', query: mysong, limit:1 }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
@@ -59,13 +64,16 @@ switch(choice) {
 
   });
 
+}
+spotified("All The Small Things"); 
   break;
+
   case `movie-this`:
   console.log("OMBD MOVIE THIS");
   request('http://www.omdbapi.com/?apikey=trilogy&t='+input+' ', function (error, response, body) {
   // console.log('error:', error); // Print the error if one occurred
   // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-
+  console.log(body); 
   console.log("Movie Name: " + JSON.parse(body).Title); 
   // * Title of the movie.
   console.log("Release Year: " + JSON.parse(body).Year); 
@@ -108,6 +116,21 @@ switch(choice) {
     
   
   });
+  inquirer.prompt([
+    {
+      name: "choice",
+      message: "What is your choice?"
+    },
+  ]).then(function(answers) {
+    // initializes the variable newguy to be a programmer object which will
+    // take in all of the user's answers to the questions above
+    var test = answers.choice;    
+    console.log(test);
+    spotified(test);
+    // pushes newguy object into our array
+    // add one to count to increment our recursive loop by o x  // run the askquestion function again so as to either end the loop or ask the questions again
+  });
+
   break;
 
   default:
