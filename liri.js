@@ -9,6 +9,8 @@ var request = require('request');
 var choice = process.argv[2];
 var input = process.argv[3];
 
+
+
 // * `my-tweets`
 
 // * `spotify-this-song`
@@ -65,11 +67,15 @@ switch(choice) {
   });
 
 }
-spotified("All The Small Things"); 
+spotified(input); 
   break;
 
   case `movie-this`:
   console.log("OMBD MOVIE THIS");
+  console.log(input);
+  if (input==="") {
+  input="Mr. Nobody"    
+  }
   request('http://www.omdbapi.com/?apikey=trilogy&t='+input+' ', function (error, response, body) {
   // console.log('error:', error); // Print the error if one occurred
   // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -122,7 +128,6 @@ spotified("All The Small Things");
       message: "What is your choice?"
     },
   ]).then(function(answers) {
-    // initializes the variable newguy to be a programmer object which will
     // take in all of the user's answers to the questions above
     var test = answers.choice;    
     console.log(test);
